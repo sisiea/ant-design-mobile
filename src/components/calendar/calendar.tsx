@@ -245,6 +245,7 @@ export const Calendar = forwardRef<CalendarRef, CalendarProps>((p, ref) => {
         ? props.shouldDisableDate(d.toDate())
         : (maxDay && d.isAfter(maxDay, 'day')) ||
           (minDay && d.isBefore(minDay, 'day'))
+      const customClassName = props.customCellClassname?.(d.toDate())
       cells.push(
         <div
           key={d.valueOf()}
@@ -258,7 +259,8 @@ export const Calendar = forwardRef<CalendarRef, CalendarProps>((p, ref) => {
               [`${classPrefix}-cell-selected-end`]: isEnd,
               [`${classPrefix}-cell-selected-row-begin`]: isSelectRowBegin,
               [`${classPrefix}-cell-selected-row-end`]: isSelectRowEnd,
-            }
+            },
+            customClassName
           )}
           onClick={() => {
             if (!props.selectionMode) return

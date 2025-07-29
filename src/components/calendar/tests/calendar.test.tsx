@@ -170,4 +170,51 @@ describe('Calendar', () => {
     )
     expect(document.getElementsByClassName('custom-cell').length).toBe(42)
   })
+
+  test('custom cell classname', () => {
+    const { container } = render(
+      <Calendar
+        customCellClassname={date => {
+          const day = dayjs(date).date()
+          if (day === 15) return 'special-day'
+          if (day % 2 === 0) return 'even-day'
+          return ''
+        }}
+      />
+    )
+
+    // 检查特殊日期的类名
+    const specialDayCell = container.querySelector('.special-day')
+    expect(specialDayCell).toBeTruthy()
+    expect(specialDayCell?.textContent).toContain('15')
+
+    // 检查偶数日期的类名
+    const evenDayCells = container.querySelectorAll('.even-day')
+    expect(evenDayCells.length).toBeGreaterThan(0)
+
+    // 验证快照
+    expect(container).toMatchSnapshot()
+  })
+
+  test('custom cell classname with selection', () => {
+    const { container } = render(
+      <Calendar
+        selectionMode='single'
+        defaultValue={new Date('2022-03-15')}
+        customCellClassname={date => {
+          const day = dayjs(date).date()
+          if (day === 15) return 'highlighted-day'
+          return ''
+        }}
+      />
+    )
+
+    // 检查选中的日期同时具有自定义类名和选中类名
+    const highlightedCell = container.querySelector('.highlighted-day')
+    expect(highlightedCell).toBeTruthy()
+    expect(highlightedCell).toHaveClass('adm-calendar-cell-selected')
+    expect(highlightedCell).toHaveClass('highlighted-day')
+
+    expect(container).toMatchSnapshot()
+  })
 })
