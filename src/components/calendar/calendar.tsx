@@ -43,6 +43,7 @@ export type CalendarProps = {
   weekStartsOn?: 'Monday' | 'Sunday'
   renderLabel?: (date: Date) => React.ReactNode
   renderDate?: (date: Date) => React.ReactNode
+  customCellClassname?: (date: Date) => string
   allowClear?: boolean
   max?: Date
   min?: Date
